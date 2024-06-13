@@ -1,10 +1,30 @@
+import { FaGraduationCap, FaRegUser } from "react-icons/fa";
+import { FiLogOut } from "react-icons/fi";
+import { RxDashboard } from "react-icons/rx";
 import { Link } from "react-router-dom";
 import logo from "../../assets/logo.svg";
+import useAuth from "../../hooks/useAuth";
 
 const Navbar = () => {
+  const { user, logOut } = useAuth();
+  const handleLogOut = () => {
+    logOut();
+  }
+
+
+
+  const handleClick = () => {
+    
+  }
+
+
+
+
+
+
   return (
     <>
-      <div className="navbar bg-base-100 md:px-80">
+      <div className="navbar  md:px-80 bg-transparent backdrop-blur-2xl sticky top-0 z-20">
         <div className="flex-1">
           <Link to="/" className="">
             <img className="w-40" src={logo} alt="" />
@@ -16,24 +36,24 @@ const Navbar = () => {
               tabIndex={0}
               className="mt-3 z-[1] card card-compact dropdown-content w-52 bg-base-100 shadow"
             >
-              <div className="card-body">
-                <span className="font-bold text-lg">8 Items</span>
-                <span className="text-info">Subtotal: $999</span>
-                <div className="card-actions">
-                  <button className="btn btn-primary btn-block">
-                    View cart
-                  </button>
-                </div>
-              </div>
+              
             </div>
           </div>
-          <div className="dropdown dropdown-end">
+          {
+            !user?.email ? <div>
+            <Link to="/login" className="px-6 py-2 font-semibold text-sm bg-[#FF4667] text-white rounded-full shadow-sm">Login</Link>
+          </div>: ''
+          }
+          
+          {
+            user?.email &&
+            <div className="dropdown dropdown-end">
             <div
               tabIndex={0}
               role="button"
-              className="btn btn-ghost btn-circle avatar"
+              className="btn btn-ghost btn-circle avatar "
             >
-              <div className="w-10 rounded-full">
+              <div className=" rounded-full">
                 <img
                   alt="Tailwind CSS Navbar component"
                   src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
@@ -42,22 +62,57 @@ const Navbar = () => {
             </div>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+              className="bg-base-100 backdrop-blur-3xl menu menu-dropdown dropdown-content mt-3 z-[1] p-2 shadow-md  w-56 rounded-lg text-base"
             >
+              <div className="px-2 flex gap-4 mb-4">
+                <div className="w-12 rounded-full">
+                  <img
+                    className="rounded-full"
+                    alt="Tailwind CSS Navbar component"
+                    src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+                  />
+                </div>
+                <div>
+                      <p className="font-semibold text-lg">{user?.displayName}</p>
+                  <p className="text-[#757575] text-sm">Student</p>
+                </div>
+              </div>
               <li>
-                <a className="justify-between">
+                <Link
+                  to="/dashboard/my-profile"
+                  className="hover:text-[#FF4667]"
+                >
+                  <FaRegUser />
                   Profile
-                  <span className="badge">New</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/dashboard" className="hover:text-[#FF4667]">
+                  <RxDashboard />
+                  Dashboard
+                </Link>
+              </li>
+              <li>
+                <a className="hover:text-[#FF4667]">
+                  <FaGraduationCap />
+                  My Courses
                 </a>
               </li>
               <li>
-                <a>Settings</a>
+                <button onClick={handleClick} className="hover:text-[#FF4667]">
+                  <FaGraduationCap />
+                  Become an Instructor
+                </button>
               </li>
+              <hr className="my-2" />
               <li>
-                <a>Logout</a>
+                <button onClick={handleLogOut} className="hover:bg-[#FF4667] hover:text-white">
+                  <FiLogOut />
+                  Logout
+                </button>
               </li>
             </ul>
-          </div>
+          </div>}
         </div>
       </div>
     </>

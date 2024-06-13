@@ -2,13 +2,17 @@ import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import Breadcrumb from "../components/Breadcrumb/Breadcrumb";
 import Navbar from "../components/Navbar/Navbar";
 import { MdOutlineDashboardCustomize, MdVolumeUp } from "react-icons/md";
-import { FaCog, FaFileAlt, FaGraduationCap, FaHeart, FaStar, FaUser } from "react-icons/fa";
+import { FaCog, FaFileAlt, FaGraduationCap, FaHeart, FaStar, FaUser, FaUsers } from "react-icons/fa";
 import { BiCog, BiSolidBadgeDollar, BiSolidCart, BiSolidCoupon, BiSolidLogOut, BiSolidTachometer } from "react-icons/bi";
 import { BsFillRocketTakeoffFill } from "react-icons/bs";
+import useAuth from "../hooks/useAuth";
+import useUsers from "../hooks/useUsers";
 
 const DashboardLayout = () => {
+  const { user } = useAuth();
+  const { users, refetch } = useUsers();
   const location = useLocation();
-  // console.log(location);
+  // console.log(users);
 
   return (
     <>
@@ -30,9 +34,11 @@ const DashboardLayout = () => {
                 </div>
                 <div>
                   <h2 className="mb-1 text-xl capitalize font-semibold text-[#22100D]">
-                    ragib Shariar
+                    {user?.displayName}
                   </h2>
-                  <p className="capitalize text-[#685F78]">student</p>
+                  <p className="capitalize text-[#685F78]">
+                    {users?.map(u=> u.email === user?.email && u.role)}
+                  </p>
                 </div>
                 <div>
                   <button className="w-full mt-7 py-3 rounded-lg text-white bg-[#FF4667] font-semibold">Add New Course</button>
@@ -44,11 +50,11 @@ const DashboardLayout = () => {
                 {/* dashboard menu */}
                 <div>
                   <ul className="text-[#685F78] space-y-4">
-                    <Link to="">
-                      <a className="flex items-center gap-2 " ><BiSolidTachometer /> Dashboard</a>
-                    </Link>
+                    <li to="/dashboard">
+                      <NavLink className="flex items-center gap-2 " ><BiSolidTachometer /> Dashboard</NavLink>
+                    </li>
                     <li>
-                      <NavLink to="my-profile" state={ {from: location}}
+                      <NavLink to="/dashboard/my-profile" state={ {from: location}}
                         className="flex items-center gap-2 " href="#"><FaUser /> My profile</NavLink>
                     </li>
                     <li>
@@ -72,7 +78,8 @@ const DashboardLayout = () => {
                     
                   </ul>
                 </div>
-                <div>
+                { user&&
+                  users?.map(u=> (u.email === user?.email)&&(u.role==='instructor' ||(u.role==='admin'))&& <div key={u?._id}>
                   <h4 className="mb-5 mt-10 text-[#002058] font-semibold">Instructor </h4>
                   <ul className="text-[#685F78] space-y-4">
                     <li>
@@ -88,7 +95,17 @@ const DashboardLayout = () => {
                       <a className="flex items-center gap-2 " href="#"><BiSolidBadgeDollar /> Earnings</a>
                     </li>
                   </ul>
-                </div>
+                </div>)
+                }
+                { users?.map(u=>(u.email=== user?.email)&&(u.role==='admin') && <div key={u._id}>
+                  <h4 className="mb-5 mt-10 text-[#002058] font-semibold">Admin Settings</h4>
+                  <ul className="text-[#685F78] space-y-4">
+                    <li>
+                      <NavLink to="/dashboard/manage-users" className="flex items-center gap-2 " href="#"><FaUsers />Manage Users</NavLink>
+                    </li>
+                  </ul>
+                </div>)
+                  }
                 <div>
                   <h4 className="mb-5 mt-10 text-[#002058] font-semibold">Account Settings</h4>
                   <ul className="text-[#685F78] space-y-4">

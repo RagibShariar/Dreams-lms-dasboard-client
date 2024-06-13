@@ -1,5 +1,8 @@
+import useAuth from "../../../hooks/useAuth";
 
 const Profile = () => {
+  const { user } = useAuth();
+
   return (
     <>
         <div className="px-6 py-4 w-full bg-white border rounded-lg text-[#002058]">
@@ -12,13 +15,13 @@ const Profile = () => {
             <div>
               <p className="mb-1 font-medium">Full Name</p>
               <h3 className=" text-[#685F78]">
-                sgsdfgsdfg
+              {user?.displayName}
               </h3>
             </div>
             <div>
               <p className="mb-1 font-medium">Email</p>
               <h3 className=" text-[#685F78]">
-                sgsdfgsdfg
+              {user?.email}
               </h3>
             </div>
           </div>
@@ -27,7 +30,7 @@ const Profile = () => {
           <div>
               <p className="mb-1 font-medium ">Registration Date</p>
               <h3 className=" text-[#685F78]">
-              January 16, 2024, 11:15 AM
+              { user?.metadata?.creationTime}
               </h3>
             </div>
           <div>
@@ -42,7 +45,7 @@ const Profile = () => {
           <div>
               <p className="mb-1 font-medium ">Email</p>
               <h3 className=" text-[#685F78]">
-              instructordemo@example.com
+              {user?.email}
               </h3>
             </div>
           <div>
