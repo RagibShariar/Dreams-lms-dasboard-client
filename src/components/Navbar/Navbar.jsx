@@ -4,8 +4,12 @@ import { RxDashboard } from "react-icons/rx";
 import { Link } from "react-router-dom";
 import logo from "../../assets/logo.svg";
 import useAuth from "../../hooks/useAuth";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import useUsers from "../../hooks/useUsers";
 
 const Navbar = () => {
+  const axiosSecure = useAxiosSecure();
+  const { users, refetch } = useUsers();
   const { user, logOut } = useAuth();
   const handleLogOut = () => {
     logOut();
@@ -13,9 +17,13 @@ const Navbar = () => {
 
 
 
-  const handleClick = () => {
-    
-  }
+  const handleChangeInstructor = (user) => {
+      console.log(user)
+      axiosSecure.patch(`/users/instructor/${user.email}`).then((res) => {
+        console.log(res);
+        refetch();
+      });
+    };
 
 
 
@@ -98,8 +106,8 @@ const Navbar = () => {
                   My Courses
                 </a>
               </li>
-              <li>
-                <button onClick={handleClick} className="hover:text-[#FF4667]">
+                    <li>
+                <button onClick={()=>handleChangeInstructor(user)} className="hover:text-[#FF4667]">
                   <FaGraduationCap />
                   Become an Instructor
                 </button>

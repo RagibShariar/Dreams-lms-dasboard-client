@@ -12,7 +12,7 @@ const ManageUsers = () => {
   });
 
   const handleChangeInstructor = (user) => {
-    axiosSecure.patch(`/users/instructor/${user._id}`).then((res) => {
+    axiosSecure.patch(`/users/instructor/${user.email}`).then((res) => {
       console.log(res);
       refetch();
     });

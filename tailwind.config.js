@@ -4,17 +4,16 @@ export default {
   theme: {
     extend: {
       backgroundImage: {
-        'profileBg': "url('./src/assets/profile-bg.jpg),",
-        'banner': "url('./src/assets/breadcrumb-bar.png')",
+        profileBg: "url('./src/assets/profile-bg.jpg),",
+        banner: "url('./src/assets/breadcrumb-bar.png')",
+        courseBanner: "url('./src/assets/courseDetail/inner-banner.jpg')",
       },
     },
     fontFamily: {
-      inter: "'Inter', sans-serif"
+      inter: "'Inter', sans-serif",
     },
   },
-  plugins: [
-    require('daisyui'),
-  ],
+  plugins: [require("daisyui")],
   daisyui: {
     themes: ["light"],
   },

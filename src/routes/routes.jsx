@@ -11,6 +11,9 @@ import Home from "../pages/Home/Home";
 import Register from "../pages/Register/Register";
 import Login from "../pages/Login/Login";
 import ManageUsers from "../pages/Dashboard/ManageUsers/ManageUsers";
+import AddCourse from "../pages/Dashboard/AddCourse/AddCourse";
+import CourseDetail from "../pages/CourseDetail/CourseDetail";
+import UpdateProfile from "../pages/Dashboard/UpdateProfile/UpdateProfile";
 
 const router = createBrowserRouter([
   {
@@ -30,6 +33,14 @@ const router = createBrowserRouter([
         element: <Login />,
       },
       {
+        path: "add-course",
+        element: <AddCourse />,
+      },
+      {
+        path: "course-details",
+        element: <CourseDetail />,
+      },
+      {
         path: "checkout",
         element: <Checkout />,
       },
@@ -46,6 +57,10 @@ const router = createBrowserRouter([
       {
         path: "my-profile",
         element: <Profile />,
+      },
+      {
+        path: "edit-profile",
+        element: <UpdateProfile />,
       },
       {
         path: "enrolled-courses",
