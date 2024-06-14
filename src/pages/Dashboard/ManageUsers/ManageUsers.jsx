@@ -2,11 +2,17 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const ManageUsers = () => {
+  // const { users, refetch } = useUsers();
   const axiosSecure = useAxiosSecure();
+
   const { data: users = [], refetch } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
-      const res = await axiosSecure.get("/users");
+      const res = await axiosSecure.get("/users", {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      });
       return res.data;
     },
   });
@@ -18,7 +24,7 @@ const ManageUsers = () => {
     });
   };
   const handleChangeStudent = (user) => {
-    axiosSecure.patch(`/users/student/${user._id}`).then((res) => {
+    axiosSecure.patch(`/users/student/${user.email}`).then((res) => {
       console.log(res);
       refetch();
     });
@@ -43,25 +49,30 @@ const ManageUsers = () => {
             {/* row 1 */}
             {users?.map((user, index) => (
               <tr key={user._id} className="hover">
-                <th>{index+1}</th>
+                <th>{index + 1}</th>
                 <td>{user.name}</td>
                 <td>{user.role}</td>
                 <td>{user.email}</td>
-                {user.role !== 'admin' && (
-                  user.role !== "instructor" ? (
+                {user.role !== "admin" &&
+                  (user.role !== "instructor" ? (
                     <td>
-                      <button onClick={() => handleChangeInstructor(user)} className="btn btn-success">
+                      <button
+                        onClick={() => handleChangeInstructor(user)}
+                        className="w-full  btn  btn-success text-white"
+                      >
                         Make Instructor
                       </button>
                     </td>
                   ) : (
                     <td>
-                      <button onClick={() => handleChangeStudent(user)} className="btn btn-warning">
+                      <button
+                        onClick={() => handleChangeStudent(user)}
+                        className="w-full  btn  text-white btn-info"
+                      >
                         make Student
                       </button>
                     </td>
-                  )
-                )}
+                  ))}
               </tr>
             ))}
           </tbody>

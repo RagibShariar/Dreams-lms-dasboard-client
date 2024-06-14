@@ -1,12 +1,11 @@
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import useAuth from "../../../hooks/useAuth";
 
-const AddCourse = () => {
-  const { user } = useAuth();
-  const instructor = user?.displayName;
-  const email = user?.email;
+const EditCourse = () => {
+  const navigate = useNavigate();
+  const course = useLoaderData();
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -15,19 +14,12 @@ const AddCourse = () => {
     const price = form.price.value;
     const description = form.title.value;
     const image = form.image.value;
-    const courseInfo = {
-      courseTitle,
-      tagline,
-      price,
-      description,
-      image,
-      instructor,
-      email,
-    };
+    const courseInfo = { courseTitle, tagline, price, description, image };
+    // console.log(courseInfo);
 
     axios
-      .post(
-        `https://dreams-lms-dasboard-server.onrender.com/courses`,
+      .patch(
+        `https://dreams-lms-dasboard-server.onrender.com/courses/${course._id}`,
         courseInfo,
         {
           headers: {
@@ -36,17 +28,17 @@ const AddCourse = () => {
         }
       )
       .then((res) => {
-        if (res.data.insertedId) {
+        if (res.data.modifiedCount > 0) {
           Swal.fire({
             position: "center",
             icon: "success",
-            title: "Course added successfully",
+            title: "Course updated successfully",
             showConfirmButton: false,
             timer: 1000,
           });
           form.reset();
+          navigate(-1);
         }
-        console.log(res);
       });
   };
 
@@ -54,10 +46,10 @@ const AddCourse = () => {
     <>
       <div className="bg-gray-100 py-20 font-inter">
         <div className="mb-10 max-w-7xl mx-auto flex justify-between items-center">
-          <h2 className="text-3xl font-semibold">Add New Course</h2>
-          <Link to="dashboard">
-            <button className=" btn btn-outline ">Back to Course</button>
-          </Link>
+          <h2 className="text-3xl font-semibold">
+            Edit your Course information
+          </h2>
+          <button className=" btn btn-outline ">Back to Course</button>
         </div>
         <div className="max-w-7xl px-4 py-12 border rounded-lg mx-auto bg-white">
           <div className="">
@@ -72,6 +64,7 @@ const AddCourse = () => {
                   </div>
                   <input
                     required
+                    defaultValue={course?.courseTitle}
                     type="text"
                     name="title"
                     placeholder="Type here"
@@ -86,6 +79,7 @@ const AddCourse = () => {
                   </div>
                   <input
                     required
+                    defaultValue={course?.tagline}
                     type="text"
                     name="tagline"
                     placeholder="Type here"
@@ -100,6 +94,7 @@ const AddCourse = () => {
                   </div>
                   <input
                     required
+                    defaultValue={course?.price}
                     type="number"
                     name="price"
                     placeholder="Type Price"
@@ -114,6 +109,7 @@ const AddCourse = () => {
                   </div>
                   <textarea
                     required
+                    defaultValue={course?.description}
                     className="textarea textarea-bordered h-36"
                     name="description"
                     placeholder="Description"
@@ -127,6 +123,7 @@ const AddCourse = () => {
                   </div>
                   <input
                     required
+                    defaultValue={course?.image}
                     type="text"
                     name="image"
                     placeholder="Image URL"
@@ -136,7 +133,7 @@ const AddCourse = () => {
               </div>
               <div className="mt-5 pt-5 text-right">
                 <button className="px-12 py-4 rounded-lg  text-white border bg-blue-500 hover:bg-white hover:text-blue-500 hover:border-blue-500 transition-all duration-300 font-semibold">
-                  Add Course
+                  Update Course
                 </button>
               </div>
             </form>
@@ -147,4 +144,4 @@ const AddCourse = () => {
   );
 };
 
-export default AddCourse;
+export default EditCourse;

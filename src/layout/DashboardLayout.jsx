@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import {
   BiSolidBadgeDollar,
   BiSolidCart,
@@ -7,6 +8,7 @@ import {
 } from "react-icons/bi";
 import { BsFillRocketTakeoffFill } from "react-icons/bs";
 import {
+  FaBookOpen,
   FaCog,
   FaFileAlt,
   FaGraduationCap,
@@ -20,17 +22,33 @@ import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import Breadcrumb from "../components/Breadcrumb/Breadcrumb";
 import Navbar from "../components/Navbar/Navbar";
 import useAuth from "../hooks/useAuth";
-import useUsers from "../hooks/useUsers";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const DashboardLayout = () => {
   const { user, logOut } = useAuth();
-  const { users, refetch } = useUsers();
+  // const { users, refetch } = useUsers();
   const location = useLocation();
   // console.log(users);
 
+  const axiosSecure = useAxiosSecure();
+  const { data: users = [], refetch } = useQuery({
+    queryKey: ["users"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/users", {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      });
+      return res.data;
+    },
+  });
+
+  // const [isAdmin] = useAdmin();
+  // console.log(isAdmin);
+
   const handleLogOut = () => {
     logOut();
-  }
+  };
 
   return (
     <>
@@ -79,19 +97,22 @@ const DashboardLayout = () => {
                 <div>
                   <ul className="text-[#685F78] space-y-4">
                     <li>
-                      <Link
-                        to=""
-                        className="flex items-center gap-2 "
-                      >
+                      <Link to="" className="flex items-center gap-2 ">
                         <BiSolidTachometer /> Dashboard
                       </Link>
                     </li>
                     <li>
                       <NavLink
-                        to="/dashboard/my-profile"
-                        
+                        to="/dashboard/all-courses"
                         className="flex items-center gap-2 "
-                       
+                      >
+                        <FaBookOpen /> Explore Courses
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink
+                        to="/dashboard/my-profile"
+                        className="flex items-center gap-2 "
                       >
                         <FaUser /> My profile
                       </NavLink>
@@ -100,7 +121,6 @@ const DashboardLayout = () => {
                       <NavLink
                         to="enrolled-courses"
                         className="flex items-center gap-2 "
-                       
                       >
                         <FaGraduationCap />
                         Enrolled Course
@@ -116,7 +136,7 @@ const DashboardLayout = () => {
                         Wishlist
                       </NavLink>
                     </li>
-                    <li>
+                    {/* <li>
                       <a className="flex items-center gap-2 " href="#">
                         <FaStar />
                         Reviews
@@ -137,7 +157,7 @@ const DashboardLayout = () => {
                         <BiSolidCoupon />
                         Support Tickets
                       </a>
-                    </li>
+                    </li> */}
                   </ul>
                 </div>
                 {user &&
@@ -151,11 +171,11 @@ const DashboardLayout = () => {
                           </h4>
                           <ul className="text-[#685F78] space-y-4">
                             <li>
-                              <a className="flex items-center gap-2 " href="#">
+                              <NavLink to="my-courses" className="flex items-center gap-2 ">
                                 <BsFillRocketTakeoffFill /> My Courses
-                              </a>
+                              </NavLink>
                             </li>
-                            <li>
+                            {/* <li>
                               <a className="flex items-center gap-2 " href="#">
                                 <MdVolumeUp /> Announcements
                               </a>
@@ -169,7 +189,7 @@ const DashboardLayout = () => {
                               <a className="flex items-center gap-2 " href="#">
                                 <BiSolidBadgeDollar /> Earnings
                               </a>
-                            </li>
+                            </li> */}
                           </ul>
                         </div>
                       )
@@ -212,7 +232,11 @@ const DashboardLayout = () => {
                       </NavLink>
                     </li>
                     <li>
-                      <button onClick={handleLogOut} className="flex items-center gap-2 " href="#">
+                      <button
+                        onClick={handleLogOut}
+                        className="flex items-center gap-2 "
+                        href="#"
+                      >
                         <BiSolidLogOut /> Logout
                       </button>
                     </li>

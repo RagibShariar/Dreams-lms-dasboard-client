@@ -1,9 +1,9 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { RxEyeClosed, RxEyeOpen } from "react-icons/rx";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import useAuth from "../../hooks/useAuth";
 import GoogleLogin from "../../components/GoogleLogin/GoogleLogin";
+import useAuth from "../../hooks/useAuth";
 
 const Login = () => {
   const Toast = Swal.mixin({
@@ -22,7 +22,7 @@ const Login = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || '/';
+  const from = location.state?.from?.pathname || "/";
   // console.log("from login page", location);
   // console.log(user)
 
@@ -40,12 +40,11 @@ const Login = () => {
     const password = e.target.password.value;
     const userInfo = { email, password };
 
-    await login(email, password)
-      .then((result) => {
-        console.log("from login page", result)
-        // navigate(location?.state ? location.state : '/')
+    await login(email, password).then((result) => {
+      console.log("from login page", result);
+      // navigate(location?.state ? location.state : '/')
 
-      //   fetch(`http://localhost:5000/users`, {
+      //   fetch(`https://dreams-lms-dasboard-server.onrender.com/users`, {
       //     method: "POST",
       //     headers: {
       //       "Content-type": "application/json",
@@ -70,7 +69,7 @@ const Login = () => {
       //     icon: "error",
       //     title: "Login Failed. Try again",
       //   });
-      });
+    });
   };
 
   return (
@@ -108,6 +107,7 @@ const Login = () => {
                 </label>
                 <div className="relative">
                   <input
+                    defaultValue="123456"
                     id="password"
                     name="password"
                     type={passwordVisible ? "text" : "password"}

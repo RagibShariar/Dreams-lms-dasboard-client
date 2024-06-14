@@ -65,11 +65,12 @@ const Register = () => {
     if (password === confirm_password) {
       createUser(email, password)
         .then((result) => {
-          updateUserProfile(name)
-        console.log("from register page", result);
-        // navigate(location?.state ? location.state : '/')
+          updateUserProfile(name);
+          console.log("from register page", result);
+          // navigate(location?.state ? location.state : '/')
+          navigate("/dashboard");
 
-          fetch(`http://localhost:5000/users`, {
+          fetch(`https://dreams-lms-dasboard-server.onrender.com/users`, {
             method: "POST",
             headers: {
               "Content-type": "application/json",
@@ -94,7 +95,7 @@ const Register = () => {
             setRegisterError("email already exits");
             return;
           }
-      });
+        });
     }
   };
 

@@ -1,6 +1,9 @@
 import { FaStar, FaStarHalf } from "react-icons/fa";
+import { Link, useLoaderData } from "react-router-dom";
 
 const CourseDetail = () => {
+  const course = useLoaderData();
+
   return (
     <>
       <div className="bg-courseBanner hero  w-full">
@@ -9,15 +12,15 @@ const CourseDetail = () => {
             <div className="md:grid grid-cols-12">
               <div className="md:col-span-8 ">
                 <div>
-                  <div className="flex items-center">
-                    <div className="w-16 h-15 rounded-full overflow-hidden">
+                  <div className="flex items-center mb-3">
+                    <div className="w-16 h-15 rounded-full mr-4 overflow-hidden">
                       <img
                         src="https://dreamslms.dreamstechnologies.com/react/static/media/user1.35da9e31b2812a3cabe8.jpg"
                         alt=""
                       />
                     </div>
-                    <div>
-                      <h4>Ragib Shariar</h4>
+                    <div className="mr-4">
+                      <h4>{course?.instructor}</h4>
                       <p>UI/UX Designer</p>
                     </div>
                     <div className="flex items-center">
@@ -31,11 +34,9 @@ const CourseDetail = () => {
                     </div>
                   </div>
                   <div>
-                    <h1>The Complete Web Developer Course 2.0</h1>
+                    <h1 className="text-3xl font-medium capitalize my-2">{course?.courseTitle}</h1>
                     <p>
-                      Learn Web Development by building 25 websites and mobile
-                      apps using HTML, CSS, Javascript, PHP, Python, MySQL &
-                      more!
+                      { course?.tagline}
                     </p>
                   </div>
                   <div className="flex items-center">
@@ -105,25 +106,33 @@ const CourseDetail = () => {
             </div>
             {/* right side */}
             <div className="col-span-4 md:-mt-56">
-
               <div className="bg-white p-6 rounded-lg border">
                 <div className=" overflow-hidden ">
                   <img
                     className="w-full object-cover"
-                    src="https://dreamslms.dreamstechnologies.com/react/static/media/video.fd8402ff1b0fb5c89c59.jpg" alt="" />
+                    src={course?.image || "https://dreamslms.dreamstechnologies.com/react/static/media/video.fd8402ff1b0fb5c89c59.jpg"}
+                    alt=""
+                  />
                 </div>
                 <div>
-                  <div className="flex items-center justify-between">
-                    <p className="uppercase text-3xl font-bold text-[#159f46]">Free</p>
-                    <p className="line-through">$99.99 <span>50% off</span></p>
+                  <div className="flex items-center justify-between my-5">
+                    <p className="uppercase text-3xl font-bold text-[#159f46]">
+                      {course?.price}
+                    </p>
+                    <p className="line-through">
+                      $99.99 <span>50% off</span>
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
-                  <button className="bg-red-400 w-1/2">Add to Wishlist</button>
-                  <button className="bg-red-400 w-1/2">Share</button>
+                  <button className="rounded-full py-2 text-slate-100 bg-red-400 w-1/2">Add to Wishlist</button>
+                  <button className="rounded-full py-2 text-slate-100 bg-red-400 w-1/2">Share</button>
                 </div>
                 <div>
-                <button className="bg-red-400 w-full">Enroll Now</button>
+                  <Link to={`/payment/${course._id}}`}>
+                  <button
+                    className="py-4 rounded-full my-4 hover:bg-red-500 bg-red-400 w-full text-slate-100">Enroll Now</button>
+                  </Link>
                 </div>
               </div>
               {/*  */}
