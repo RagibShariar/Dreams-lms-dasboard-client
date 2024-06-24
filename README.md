@@ -2,7 +2,7 @@
 
 ## server: https://dreams-lms-dasboard-server.onrender.com/
 
-## Client: https://dreams-lms-dasboard-client.vercel.app/
+## Client: https://dreams-lms-9efcb.web.app/
 
 
 
